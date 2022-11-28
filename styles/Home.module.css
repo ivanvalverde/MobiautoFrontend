@@ -1,0 +1,53 @@
+.container {
+  padding: 0 2rem;
+  background-color: #f9f6fc;
+}
+
+.main {
+  margin: 0 auto;
+  min-height: 100vh;
+  padding: 4rem 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.main .displayer {
+  background-color: #FFFFFF;
+  border: solid 1px #e7e7e7;
+  padding: 20px 50px;
+  border-radius: 4px;
+  -webkit-box-shadow: 3px 3px 5px 0px rgba(204,204,204,0.7);
+  -moz-box-shadow: 3px 3px 5px 0px rgba(204,204,204,0.7);
+  box-shadow: 3px 3px 5px 0px rgba(204,204,204,0.7);
+}
+
+.main .title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #424142;
+}
+
+.main .title h1 {
+  margin: 0;
+}
+
+.main .title h3 {
+  margin-top: 10px;
+}
+
+.inputContainer .autocomplete {
+  margin: 10px 0;
+}
+
+.inputContainer .submitBtn {
+  display: flex;
+  margin: 0 auto;
+  margin-top: 20px;
+  background-color: #5d00bf;
+  text-transform: none;
+  padding: 6px 50px;
+}
