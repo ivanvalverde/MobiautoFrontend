@@ -64,14 +64,11 @@ const Home = (): JSX.Element => {
       setCarBrand(response?.data);
     };
     try {
-      setLoading({ ...loading, brand: true });
       data();
     } catch (err) {
       console.log(err);
-    } finally {
-      setLoading({ ...loading, brand: false });
     }
-  }, [setCarBrand, setLoading]);
+  }, [setCarBrand]);
 
   useEffect(() => {
     if (inputValues?.brand?.code) {
@@ -82,15 +79,12 @@ const Home = (): JSX.Element => {
         setCarModel(response?.data?.modelos);
       };
       try {
-        setLoading({ ...loading, model: true });
         data();
       } catch (err) {
         console.log(err);
-      } finally {
-        setLoading({ ...loading, model: false });
       }
     }
-  }, [inputValues?.brand, setCarModel, setLoading]);
+  }, [inputValues?.brand, setCarModel]);
 
   useEffect(() => {
     if (inputValues?.model?.code && inputValues?.brand?.code) {
@@ -101,15 +95,12 @@ const Home = (): JSX.Element => {
         setCarYear(response?.data);
       };
       try {
-        setLoading({ ...loading, year: true });
         data();
       } catch (err) {
         console.log(err);
-      } finally {
-        setLoading({ ...loading, year: false });
       }
     }
-  }, [inputValues?.model, setCarYear, setLoading]);
+  }, [inputValues?.model, setCarYear]);
 
   const handleCarBrandChange = (brand: string) => {
     const carBrandObj = formattedCardBrand.filter((carBrand) => {
@@ -147,6 +138,7 @@ const Home = (): JSX.Element => {
   };
 
   const handleSubmit = () => {
+    setLoading(true);
     const data = async () => {
       const response = await axios.get(
         `https://parallelum.com.br/fipe/api/v1/carros/marcas/${inputValues?.brand?.code}/modelos/${inputValues?.model?.code}/anos/${inputValues?.year?.code}`
@@ -154,12 +146,10 @@ const Home = (): JSX.Element => {
       setCarValue(response?.data);
     };
     try {
-      setLoading({ ...loading, submit: true });
       data();
     } catch (err) {
       console.log(err);
-    } finally {
-      setLoading({ ...loading, submit: false });
+      setLoading(false);
     }
   };
 

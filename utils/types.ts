@@ -17,13 +17,6 @@ export type InputValues = {
     year: FormattedData;
 }
 
-export type LoadingState = {
-    brand: boolean;
-    model: boolean;
-    year: boolean;
-    submit: boolean;
-}
-
 export type CarValue = {
     Valor: string;
     Marca: string;

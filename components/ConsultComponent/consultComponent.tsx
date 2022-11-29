@@ -4,10 +4,10 @@ import {
   CircularProgress,
   TextField,
 } from "@mui/material";
-import React, { SyntheticEvent, useState } from "react";
+import React, { SyntheticEvent } from "react";
 import { Texts } from "../../utils/enums";
 import styles from "../../styles/Home.module.css";
-import { FormattedData, InputValues, LoadingState } from "../../utils/types";
+import { FormattedData, InputValues } from "../../utils/types";
 
 interface IConsultComponent {
   carBrandData: FormattedData[];
@@ -18,7 +18,7 @@ interface IConsultComponent {
   handleCarYearChange: (event: SyntheticEvent<Element, Event>) => void;
   handleSubmit: () => void;
   inputValues: InputValues;
-  loadingData: LoadingState;
+  loadingData: boolean;
   getOptionLabel: (option: FormattedData) => string;
 }
 
@@ -55,7 +55,6 @@ export const ConsultComponent = ({
             sx={{ width: 400 }}
             renderInput={(params) => <TextField {...params} label="Marca" />}
             onChange={handleCarBrandChange}
-            loading={loadingData?.brand}
             value={inputValues?.brand}
             clearOnBlur
           />
@@ -69,7 +68,6 @@ export const ConsultComponent = ({
             renderInput={(params) => <TextField {...params} label="Modelo" />}
             disabled={!carModelData.length}
             onChange={handleCarModelChange}
-            loading={loadingData?.model}
             value={inputValues?.model}
             clearOnBlur
           />
@@ -83,7 +81,6 @@ export const ConsultComponent = ({
             renderInput={(params) => <TextField {...params} label="Ano" />}
             disabled={!carModelData.length || !carYearData.length}
             onChange={handleCarYearChange}
-            loading={loadingData?.year}
             value={inputValues?.year}
             clearOnBlur
           />
@@ -96,8 +93,8 @@ export const ConsultComponent = ({
             onClick={handleSubmit}
             disabled={isSubmitBtnDisabled}
           >
-            {loadingData?.submit ? (
-              <CircularProgress sx={{ color: "#FFFFFF" }} />
+            {loadingData ? (
+              <CircularProgress sx={{ color: "#FFFFFF", fontSize: "18px" }} />
             ) : (
               Texts.CONSULT_PRICE
             )}
