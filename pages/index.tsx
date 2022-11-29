@@ -4,6 +4,7 @@ import ConsultComponent from "../components/ConsultComponent";
 import { CarContext } from "../components/context";
 import SuccessComponent from "../components/SuccessComponent";
 import styles from "../styles/Home.module.css";
+import { FormattedData } from "../utils/types";
 
 const Home = (): JSX.Element => {
   const {
@@ -17,6 +18,8 @@ const Home = (): JSX.Element => {
     setCarValue,
     setCarYear,
     setInputValues,
+    loading,
+    setLoading,
   } = useContext(CarContext);
 
   const isEmpty = (obj: { [key: string]: string | number }): boolean => {
@@ -60,62 +63,111 @@ const Home = (): JSX.Element => {
       );
       setCarBrand(response?.data);
     };
-    data();
-  }, [setCarBrand]);
+    try {
+      setLoading({ ...loading, brand: true });
+      data();
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading({ ...loading, brand: false });
+    }
+  }, [setCarBrand, setLoading]);
 
   useEffect(() => {
-    if (inputValues?.brand) {
+    if (inputValues?.brand?.code) {
       const data = async () => {
         const response = await axios.get(
-          `https://parallelum.com.br/fipe/api/v1/carros/marcas/${inputValues?.brand}/modelos`
+          `https://parallelum.com.br/fipe/api/v1/carros/marcas/${inputValues?.brand?.code}/modelos`
         );
         setCarModel(response?.data?.modelos);
       };
-      data();
+      try {
+        setLoading({ ...loading, model: true });
+        data();
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading({ ...loading, model: false });
+      }
     }
-  }, [inputValues?.brand, setCarModel]);
+  }, [inputValues?.brand, setCarModel, setLoading]);
 
   useEffect(() => {
-    if (inputValues?.model && inputValues?.brand) {
+    if (inputValues?.model?.code && inputValues?.brand?.code) {
       const data = async () => {
         const response = await axios.get(
-          `https://parallelum.com.br/fipe/api/v1/carros/marcas/${inputValues?.brand}/modelos/${inputValues?.model}/anos`
+          `https://parallelum.com.br/fipe/api/v1/carros/marcas/${inputValues?.brand?.code}/modelos/${inputValues?.model?.code}/anos`
         );
         setCarYear(response?.data);
       };
-      data();
+      try {
+        setLoading({ ...loading, year: true });
+        data();
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading({ ...loading, year: false });
+      }
     }
-  }, [inputValues?.model, inputValues?.brand, setCarYear]);
+  }, [inputValues?.model, setCarYear, setLoading]);
 
   const handleCarBrandChange = (brand: string) => {
     const carBrandObj = formattedCardBrand.filter((carBrand) => {
       return carBrand?.label === brand;
     })[0];
-    setInputValues({ ...inputValues, brand: carBrandObj?.code });
+    setInputValues({
+      brand: { label: carBrandObj?.label, code: carBrandObj?.code },
+      model: { label: "", code: "" },
+      year: { label: "", code: "" },
+    });
+    setCarModel([]);
+    setCarYear([]);
   };
 
   const handleCarModelChange = (model: string) => {
     const carModelObj = formattedCardModel.filter((carModel) => {
       return carModel?.label === model;
     })[0];
-    setInputValues({ ...inputValues, model: carModelObj?.code });
+    setInputValues({
+      ...inputValues,
+      model: { label: carModelObj?.label, code: carModelObj?.code },
+      year: { label: "", code: "" },
+    });
+    setCarYear([]);
   };
 
   const handleCarYearChange = (year: string) => {
     const carYearObj = formattedCardYear.filter((carYear) => {
       return carYear?.label === year;
     })[0];
-    setInputValues({ ...inputValues, year: carYearObj?.code });
+    setInputValues({
+      ...inputValues,
+      year: { label: carYearObj?.label, code: carYearObj?.code },
+    });
   };
 
   const handleSubmit = () => {
     const data = async () => {
       const response = await axios.get(
-        `https://parallelum.com.br/fipe/api/v1/carros/marcas/${inputValues?.brand}/modelos/${inputValues?.model}/anos/${inputValues?.year}`
+        `https://parallelum.com.br/fipe/api/v1/carros/marcas/${inputValues?.brand?.code}/modelos/${inputValues?.model?.code}/anos/${inputValues?.year?.code}`
       );
       setCarValue(response?.data);
     };
-    data();
+    try {
+      setLoading({ ...loading, submit: true });
+      data();
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading({ ...loading, submit: false });
+    }
+  };
+
+  const getOptionLabel = (option: FormattedData) => {
+    if (option.label) {
+      return option.label;
+    }
+    return "";
   };
   return (
     <div className={styles.container}>
@@ -138,6 +190,8 @@ const Home = (): JSX.Element => {
             }}
             handleSubmit={handleSubmit}
             inputValues={inputValues}
+            loadingData={loading}
+            getOptionLabel={getOptionLabel}
           />
         ) : (
           <SuccessComponent

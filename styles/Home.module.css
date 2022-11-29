@@ -52,8 +52,24 @@
   margin: 0 auto;
   margin-top: 20px;
   background-color: #5d00bf;
+  color: #FFFFFF;
   text-transform: none;
   padding: 6px 50px;
+}
+
+.inputContainer .disabledBtn {
+  display: flex;
+  margin: 0 auto;
+  margin-top: 20px;
+  background-color: #e0e0e0;
+  color: #b9b6b5;
+  text-transform: none;
+  padding: 6px 50px;
+}
+
+.inputContainer .btn {
+  width: 240px;
+  height: 40px;
 }
 
 .successChip {

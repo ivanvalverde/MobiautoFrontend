@@ -1,8 +1,13 @@
-import { Autocomplete, Button, TextField } from "@mui/material";
-import React, { SyntheticEvent } from "react";
+import {
+  Autocomplete,
+  Button,
+  CircularProgress,
+  TextField,
+} from "@mui/material";
+import React, { SyntheticEvent, useState } from "react";
 import { Texts } from "../../utils/enums";
 import styles from "../../styles/Home.module.css";
-import { FormattedData, InputValues } from "../../utils/types";
+import { FormattedData, InputValues, LoadingState } from "../../utils/types";
 
 interface IConsultComponent {
   carBrandData: FormattedData[];
@@ -13,6 +18,8 @@ interface IConsultComponent {
   handleCarYearChange: (event: SyntheticEvent<Element, Event>) => void;
   handleSubmit: () => void;
   inputValues: InputValues;
+  loadingData: LoadingState;
+  getOptionLabel: (option: FormattedData) => string;
 }
 
 export const ConsultComponent = ({
@@ -24,7 +31,13 @@ export const ConsultComponent = ({
   handleCarYearChange,
   handleSubmit,
   inputValues,
+  loadingData,
+  getOptionLabel,
 }: IConsultComponent): JSX.Element => {
+  const isSubmitBtnDisabled =
+    !inputValues.model.code ||
+    !inputValues.brand.code ||
+    !inputValues.year.code;
   return (
     <>
       <div className={styles.title}>
@@ -38,37 +51,56 @@ export const ConsultComponent = ({
             disablePortal
             id="car-brand-combo-box"
             options={carBrandData}
+            getOptionLabel={getOptionLabel}
             sx={{ width: 400 }}
             renderInput={(params) => <TextField {...params} label="Marca" />}
             onChange={handleCarBrandChange}
+            loading={loadingData?.brand}
+            value={inputValues?.brand}
+            clearOnBlur
           />
           <Autocomplete
             className={styles.autocomplete}
             disablePortal
             id="car-model-combo-box"
             options={carModelData}
+            getOptionLabel={getOptionLabel}
             sx={{ width: 400 }}
             renderInput={(params) => <TextField {...params} label="Modelo" />}
-            disabled={!inputValues.brand}
+            disabled={!carModelData.length}
             onChange={handleCarModelChange}
+            loading={loadingData?.model}
+            value={inputValues?.model}
+            clearOnBlur
           />
           <Autocomplete
             className={styles.autocomplete}
             disablePortal
             id="car-year-combo-box"
             options={carYearData}
+            getOptionLabel={getOptionLabel}
             sx={{ width: 400 }}
             renderInput={(params) => <TextField {...params} label="Ano" />}
-            disabled={!inputValues.model || !inputValues.brand}
+            disabled={!carModelData.length || !carYearData.length}
             onChange={handleCarYearChange}
+            loading={loadingData?.year}
+            value={inputValues?.year}
+            clearOnBlur
           />
 
           <Button
             variant="contained"
-            className={styles.submitBtn}
+            className={`${styles.btn} ${
+              isSubmitBtnDisabled ? styles.disabledBtn : styles.submitBtn
+            }`}
             onClick={handleSubmit}
+            disabled={isSubmitBtnDisabled}
           >
-            {Texts.CONSULT_PRICE}
+            {loadingData?.submit ? (
+              <CircularProgress sx={{ color: "#FFFFFF" }} />
+            ) : (
+              Texts.CONSULT_PRICE
+            )}
           </Button>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import { createContext, Dispatch, SetStateAction, useState } from "react";
-import { Brand, CarValue, InputValues, Model, Year } from "../utils/types";
+import { Brand, CarValue, InputValues, LoadingState, Model, Year } from "../utils/types";
 
 type ICarProviderProps = {
     children: JSX.Element;
@@ -16,6 +16,8 @@ type ICarProviderProps = {
     setCarValue: Dispatch<SetStateAction<CarValue>>;
     inputValues: InputValues;
     setInputValues: Dispatch<SetStateAction<InputValues>>;
+    loading: LoadingState;
+    setLoading: Dispatch<SetStateAction<LoadingState>>;
   }
   
   const CarContext = createContext<ICarContextProps>({} as ICarContextProps);
@@ -25,10 +27,25 @@ type ICarProviderProps = {
     const [carModel, setCarModel] = useState<Model[]>([]);
     const [carYear, setCarYear] = useState<Year[]>([]);
     const [carValue, setCarValue] = useState<CarValue>({} as CarValue);
+    const [loading, setLoading] = useState<LoadingState>({
+      brand: false,
+      model: false,
+      year: false,
+      submit: false,
+    });
     const [inputValues, setInputValues] = useState<InputValues>({
-        brand: "",
-        model: "",
-        year: "",
+        brand: {
+          label: "",
+          code: ""
+        },
+        model: {
+          label: "",
+          code: ""
+        },
+        year: {
+          label: "",
+          code: ""
+        },
       });
   
     return (
@@ -43,7 +60,9 @@ type ICarProviderProps = {
           setCarModel,
           setCarValue,
           setCarYear,
-          setInputValues
+          setInputValues,
+          loading,
+          setLoading,
         }}
       >
         {children}

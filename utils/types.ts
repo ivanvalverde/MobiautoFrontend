@@ -12,9 +12,16 @@ export type CarModel = {
 }
 
 export type InputValues = {
-    brand: string;
-    model: string;
-    year: string;
+    brand: FormattedData;
+    model: FormattedData;
+    year: FormattedData;
+}
+
+export type LoadingState = {
+    brand: boolean;
+    model: boolean;
+    year: boolean;
+    submit: boolean;
 }
 
 export type CarValue = {
