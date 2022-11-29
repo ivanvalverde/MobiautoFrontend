@@ -1,6 +1,6 @@
 .container {
-  padding: 0 2rem;
   background-color: #f9f6fc;
+  font-family: 'Roboto', sans-serif!important;
 }
 
 .main {
@@ -12,6 +12,10 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.success {
+  background-color: #dcf5f2;
 }
 
 .main .displayer {
@@ -50,4 +54,15 @@
   background-color: #5d00bf;
   text-transform: none;
   padding: 6px 50px;
+}
+
+.successChip {
+  background-color: #00a38c;
+  color: #FFFFFF;
+  font-size: 1.2em;
+  margin: 10px 0;
+}
+
+.ps {
+  font-size: 0.7em;
 }

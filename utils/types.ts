@@ -16,3 +16,20 @@ export type InputValues = {
     model: string;
     year: string;
 }
+
+export type CarValue = {
+    Valor: string;
+    Marca: string;
+    Modelo: string;
+    AnoModelo: number;
+    Combustivel: string;
+    CodigoFipe: string;
+    MesReferencia: string;
+    TipoVeiculo: number;
+    SiglaCombustivel: string;
+}
+
+export type FormattedData = {
+    label: string;
+    code: string;
+}
